@@ -9,7 +9,11 @@ const names = Object.keys(nameToPic);
 
 export default function GameScreen() {
   // TODO: Declare and initialize state variables here, using "useState".
-
+  const [correct, setCorrect] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [correctName, setCorrectName] = useState("");
+  const [correctImage, setCorrectImage] = useState("");
+  const [nameOptions, setNameOptions] = useState([]);
   // State for the timer is handled for you.
   const [timeLeft, setTimeLeft] = useState(5000);
 
@@ -20,6 +24,9 @@ export default function GameScreen() {
       setTimeLeft(timeLeft - 10);
     } else {
       // Time has expired
+      getNextRound();
+      setTimeLeft(5000);
+      setTotal(total + 1);
       // TODO: update appropriate state variables
     }
   };
@@ -44,13 +51,21 @@ export default function GameScreen() {
     nameOptions = shuffle(nameOptions);
 
     // TODO: Update state here.
-
+    setCorrectName(correctName);
+    setCorrectImage(correctImage);
+    setNameOptions(nameOptions);
     setTimeLeft(5000);
   };
 
   // Called when user taps a name option.
   // TODO: Update correct # and total # state values.
-  const selectedNameChoice = (index) => {};
+  const selectedNameChoice = (index) => {
+    setTotal(total + 1);
+    if(nameOptions[index] === correctName){
+      setCorrect(correct + 1);
+    }
+    getNextRound();
+  };
 
   // Call the countDown() method every 10 milliseconds.
   useEffect(() => {
@@ -66,8 +81,9 @@ export default function GameScreen() {
     () => {
       getNextRound();
     },
-    [
+    [correctName, correctImage, nameOptions
       /* TODO: Your State Variable Goes Here */
+
     ]
   );
 
@@ -83,7 +99,7 @@ export default function GameScreen() {
         onPress={() => selectedNameChoice(j)}
       >
         <Text style={styles.buttonText}>
-          {/* TODO: Use something from state here. */}
+          {nameOptions[j]}
         </Text>
       </TouchableOpacity>
     );
@@ -93,11 +109,29 @@ export default function GameScreen() {
 
   // Style & return the view.
   return (
-    <View>
-      {/* TODO: Build out your UI using Text and Image components. */}
-      {/* Hint: What does the nameButtons list above hold? 
+    <View style = {styles.container}>
+      <Text style = {styles.scoreText}>
+        Current Score: {correct} / {total}
+      </Text>
+      <Text style = {styles.timerText}>
+        Time Remaining: {timeRemainingStr}
+      </Text>
+      <View style = {styles.imageView}>
+        <Image style = {styles.image}>
+          {correctImage}
+        </Image>
+      </View>
+      <View>
+        {nameButtons}
+      </View>
+
+      
+
+
+      /* TODO: Build out your UI using Text and Image components. */
+      /* Hint: What does the nameButtons list above hold? 
           What types of objects is this list storing?
-          Try to get a sense of what's going on in the for loop above. */}
+          Try to get a sense of what's going on in the for loop above. */
     </View>
   );
 }
