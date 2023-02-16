@@ -81,7 +81,7 @@ export default function GameScreen() {
     () => {
       getNextRound();
     },
-    [correctName, correctImage, nameOptions
+    [
       /* TODO: Your State Variable Goes Here */
 
     ]
@@ -117,8 +117,7 @@ export default function GameScreen() {
         Time Remaining: {timeRemainingStr}
       </Text>
       <View style = {styles.imageView}>
-        <Image style = {styles.image}>
-          {correctImage}
+        <Image style = {styles.imageLogo} source = {correctImage}>
         </Image>
       </View>
       <View>
@@ -128,10 +127,7 @@ export default function GameScreen() {
       
 
 
-      /* TODO: Build out your UI using Text and Image components. */
-      /* Hint: What does the nameButtons list above hold? 
-          What types of objects is this list storing?
-          Try to get a sense of what's going on in the for loop above. */
+     
     </View>
   );
 }
